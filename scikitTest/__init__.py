@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from sklearn.linear_model import LogisticRegressionCV as lr
 from sklearn.decomposition import PCA as pca
-from sklearn.preprocessing import StandardScaler as sc
+from sklearn.preprocessing import scale as sc
 
 # data preparation
 # read original data from file
@@ -30,7 +30,7 @@ label = data[:, 12]
 data = data[:, c]
 
 # scale data
-data = sc.fit_transform(data)
+data = sc(data)
 pca = pca(n_components=12)
 fit = pca.fit_transform(data)
 data = pd.DataFrame(data = fit)
