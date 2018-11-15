@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from sklearn.linear_model import LogisticRegressionCV as lr
 from sklearn.decomposition import PCA as pca
-from sklearn.preprocessing import scale as sc
+from sklearn.preprocessing import MinMaxScaler as sc
 
 # data preparation
 # read original data from file
@@ -15,6 +15,7 @@ nullValue = oriData[oriData.isnull().values==True]
 nullIndex = nullValue.index.tolist()
 # drop null rows
 cleanData = oriData.drop(nullIndex)
+
 # preprocess time
 tempTime = cleanData['Time'].str.split(':', expand=True).pop(0)
 tempTime = pd.DataFrame(tempTime,dtype=np.float)
@@ -30,12 +31,12 @@ label = data[:, 12]
 data = data[:, c]
 
 # scale data
-data = sc(data)
-pca = pca(n_components=12)
-fit = pca.fit_transform(data)
-data = pd.DataFrame(data = fit)
+sc = sc()
+data = sc.fit_transform(data)
 print(data)
-
+pca = pca(n_components=10)
+fit = pca.fit_transform(data)
+data = pd.DataFrame(data = fit) # data after processing by PCA
 # set up the model
 logisticRegressionInstance = lr()
 logisticRegressionInstance.fit(data, label.astype('int'))
